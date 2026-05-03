@@ -28,6 +28,21 @@ public:
         dp[n] = cost[n] + min(solve2(cost , n-1 , dp) , solve2(cost , n-2 , dp));
         return dp[n];
     }
+
+    //tabultion
+    int solve3(vector<int> &cost , int n){
+        //step : dp arrya creation
+        vector<int> dp(n+1);
+        //step2 : base case 
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+
+        //step3: handle the rest of the array 
+        for(int i = 2; i < n; i++){
+            dp[i] = cost[i] + min(dp[i-1] , dp[i-2]);
+        }
+        return min(dp[n-1] , dp[n-2]);
+    }
     int minCostClimbingStairs(vector<int>& cost) {
         // int n = cost.size();
         // //It can be simplified  - HOMEWORK
@@ -35,10 +50,13 @@ public:
         // return ans;
 
 
+        // int n = cost.size();
+        // //step 1: create dp array and insilize with -1
+        // vector<int> dp(n+1 , -1);
+        // int ans = min(solve2(cost , n-1 , dp) , solve2(cost , n-2 , dp));
+        // return ans;     
+
         int n = cost.size();
-        //step 1: create dp array and insilize with -1
-        vector<int> dp(n+1 , -1);
-        int ans = min(solve2(cost , n-1 , dp) , solve2(cost , n-2 , dp));
-        return ans;        
+        return solve3(cost , n);    
     }
 };
