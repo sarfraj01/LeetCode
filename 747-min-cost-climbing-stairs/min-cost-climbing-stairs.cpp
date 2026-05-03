@@ -12,6 +12,7 @@ public:
         return ans;
     }
     
+    //Recursion + memorization 
     int solve2(vector<int> &cost , int n  , vector<int> &dp){
         //base case
         if(n == 0)
@@ -43,20 +44,43 @@ public:
         }
         return min(dp[n-1] , dp[n-2]);
     }
+    
+    //Space Optimization
+    int solve4(vector<int> &cost , int n){
+        
+        int prev2 = cost[0];
+        int prev1 = cost[1];
+
+        for(int i = 2; i < n; i++){
+            int curr = cost[i] + min(prev1 , prev2);
+            prev2  = prev1;
+            prev1 = curr;
+        }
+        return min(prev1 , prev2);
+    }
+
     int minCostClimbingStairs(vector<int>& cost) {
+        //Recursion
         // int n = cost.size();
         // //It can be simplified  - HOMEWORK
         // int ans = min(solve(cost , n-1) , solve(cost , n-2));
         // return ans;
 
 
+        //Recursion + memorization
         // int n = cost.size();
         // //step 1: create dp array and insilize with -1
         // vector<int> dp(n+1 , -1);
         // int ans = min(solve2(cost , n-1 , dp) , solve2(cost , n-2 , dp));
         // return ans;     
 
+
+        //tabultion
+        // int n = cost.size();
+        // return solve3(cost , n);
+
+        //Space Optimization
         int n = cost.size();
-        return solve3(cost , n);    
+        return solve4(cost , n);    
     }
 };
