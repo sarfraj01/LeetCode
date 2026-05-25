@@ -87,6 +87,53 @@ public:
         return dp[1][0];
     }
 
+    //space optimization
+
+    int solvespace(vector<int> &nums1 , vector<int> &nums2 ){
+        int n = nums1.size();
+
+        int swap = 0;
+        int nonswap = 0;
+        int currswap = 0;
+        int currnonswap = 0;
+
+
+
+        for(int index = n-1; index >= 1; index--){
+            for(int swapped = 1; swapped >= 0; swapped--){
+
+                
+                int ans = INT_MAX;
+
+                int prev1 = nums1[index-1];
+                int prev2 = nums2[index-1];
+
+                //catch of the code
+                if(swapped){
+                    int temp = prev2;
+                    prev2 = prev1;
+                    prev1 = temp;
+                }
+
+                //non swap
+                if(nums1[index] > prev1 && nums2[index] > prev2)
+                    ans = nonswap;
+                //swap
+                if(nums1[index] > prev2 && nums2[index] > prev1)
+                    ans = min(ans, 1+swap);
+                
+                if(swapped)
+                    currswap = ans;
+                else
+                    currnonswap = ans;    
+            }
+            swap = currswap;
+            nonswap = currnonswap;
+        }
+
+        return min(swap , nonswap);
+    }
+
 
     int minSwap(vector<int>& nums1, vector<int>& nums2) {
 
@@ -100,7 +147,8 @@ public:
         // vector<vector<int>> dp(n , vector<int> (2 , -1));
         // return solveMem(nums1 , nums2 , 1 , swapped  , dp);
 
-        return solveTab(nums1 , nums2);
+       // return solveTab(nums1 , nums2);
+        return solvespace(nums1 , nums2);
         
     }
 };
